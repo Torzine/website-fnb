@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAHIS SPACE — Hidden Coffee Shop · Kalijambe, Sragen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #0a4f7a;
+    --ocean-mid: #1a7ab5;
+    --ocean-light: #5fb3e4;
+    --ocean-pale: #e8f4fd;
+    --ocean-foam: #f0f8ff;
+    --white: #ffffff;
+    --ink: #0d1b2a;
+    --mist: #6b8fa8;
+    --sand: #f7f9fb;
+    --accent: #00c6a7;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5%;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(10,79,122,0.08);
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 20px rgba(10,79,122,0.1); }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--ocean);
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--ocean-light); font-style: italic; }
+
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--mist);
+    font-size: 0.9rem; font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--ocean); }
+
+  .nav-cta {
+    background: var(--ocean);
+    color: var(--white) !important;
+    padding: 0.55rem 1.4rem;
+    border-radius: 50px;
+    font-weight: 500 !important;
+  }
+  .nav-cta:hover { background: var(--ocean-mid) !important; color: var(--white) !important; }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--ocean); border-radius: 2px; transition: .3s; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 5% 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(95,179,228,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 80% 80%, rgba(0,198,167,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* wave decoration */
+  .hero-wave {
+    position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 80px;
+  }
+
+  .hero-text { animation: fadeUp .8s ease both; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--ocean-pale);
+    color: var(--ocean);
+    font-size: 0.78rem; font-weight: 500;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(26,122,181,0.2);
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+  }
+  .hero h1 em { color: var(--ocean); font-style: italic; }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--mist);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--ocean);
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.85rem 2rem;
+    border-radius: 50px;
+    font-size: 0.95rem; font-weight: 500;
+    transition: transform .2s, background .2s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(10,79,122,0.25);
+  }
+  .btn-primary:hover { background: var(--ocean-mid); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(10,79,122,0.3); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--ocean);
+    text-decoration: none;
+    font-size: 0.95rem; font-weight: 500;
+    padding: 0.85rem 1.5rem;
+    border-radius: 50px;
+    border: 1.5px solid rgba(10,79,122,0.3);
+    transition: all .2s;
+  }
+  .btn-ghost:hover { background: var(--ocean-pale); border-color: var(--ocean); }
+
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 2.5rem; padding-top: 2rem;
+    border-top: 1px solid rgba(10,79,122,0.08);
+  }
+  .stat-item .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700; color: var(--ocean);
+    display: block;
+  }
+  .stat-item .label { font-size: 0.8rem; color: var(--mist); font-weight: 400; }
+
+  /* hero image mosaic */
+  .hero-visual {
+    position: relative;
+    height: 540px;
+    animation: fadeUp .8s .2s ease both;
+  }
+  .mosaic-main {
+    position: absolute; top: 0; left: 0; right: 60px; bottom: 80px;
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #c9e8f7 0%, #5fb3e4 100%);
+  }
+  .mosaic-main img { width: 100%; height: 100%; object-fit: cover; }
+  .mosaic-sm1 {
+    position: absolute; bottom: 0; right: 0; width: 200px; height: 220px;
+    border-radius: 20px; overflow: hidden;
+    background: linear-gradient(135deg, #e8f4fd 0%, #1a7ab5 100%);
+    border: 4px solid var(--white);
+  }
+  .mosaic-sm1 img { width: 100%; height: 100%; object-fit: cover; }
+  .mosaic-sm2 {
+    position: absolute; top: 20px; right: 20px; width: 110px; height: 110px;
+    border-radius: 16px; overflow: hidden;
+    background: var(--ocean-pale);
+    border: 4px solid var(--white);
+  }
+  .mosaic-sm2 img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* floating card */
+  .float-card {
+    position: absolute; bottom: 90px; left: -20px;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 8px 32px rgba(10,79,122,0.15);
+    display: flex; align-items: center; gap: 0.8rem;
+    animation: float 4s ease-in-out infinite;
+    min-width: 200px;
+  }
+  .float-card .icon-wrap {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--ocean-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .float-card .fc-text .fc-title { font-weight: 500; font-size: 0.85rem; color: var(--ink); }
+  .float-card .fc-text .fc-sub { font-size: 0.75rem; color: var(--mist); }
+
+  /* ── SECTION BASE ── */
+  section { padding: 5rem 5%; }
+
+  .section-label {
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 2px;
+    color: var(--ocean-light); text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    line-height: 1.2; color: var(--ink); font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .section-subtitle { color: var(--mist); font-size: 1rem; line-height: 1.7; font-weight: 300; max-width: 500px; }
+
+  /* ── ABOUT / ABOUT-SPLIT ── */
+  .about { background: var(--sand); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .about-image-wrap { position: relative; }
+  .about-img-main {
+    width: 100%; aspect-ratio: 4/5;
+    border-radius: 24px; overflow: hidden;
+    background: linear-gradient(160deg, #a8d8f0 0%, #0a4f7a 100%);
+  }
+  .about-img-main img { width: 100%; height: 100%; object-fit: cover; }
+  .about-img-accent {
+    position: absolute; bottom: -24px; right: -24px;
+    width: 160px; aspect-ratio: 1;
+    border-radius: 18px; overflow: hidden;
+    background: var(--ocean-pale);
+    border: 5px solid var(--white);
+    box-shadow: 0 4px 20px rgba(10,79,122,0.12);
+  }
+  .about-img-accent img { width: 100%; height: 100%; object-fit: cover; }
+
+  .about-tag {
+    position: absolute; top: 24px; left: -24px;
+    background: var(--ocean);
+    color: var(--white);
+    padding: 0.8rem 1.2rem;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(10,79,122,0.3);
+  }
+  .about-tag .tag-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; display: block; }
+  .about-tag .tag-text { font-size: 0.7rem; font-weight: 500; opacity: 0.85; }
+
+  .about-features { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .feat-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1.1rem 1.2rem;
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid rgba(10,79,122,0.06);
+    transition: box-shadow .25s;
+  }
+  .feat-item:hover { box-shadow: 0 4px 16px rgba(10,79,122,0.08); }
+  .feat-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--ocean-pale); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+  }
+  .feat-content h4 { font-size: 0.9rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+  .feat-content p { font-size: 0.82rem; color: var(--mist); font-weight: 300; }
+
+  /* ── MENU / GALLERY ── */
+  .menu { background: var(--white); }
+  .menu-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem; }
+  .menu-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .tab-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px; border: 1.5px solid rgba(10,79,122,0.2);
+    background: transparent; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 500; color: var(--mist);
+    transition: all .2s;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--ocean); color: var(--white); border-color: var(--ocean);
+  }
+
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .menu-card {
+    border-radius: 20px; overflow: hidden;
+    background: var(--sand);
+    border: 1px solid rgba(10,79,122,0.06);
+    transition: transform .25s, box-shadow .25s;
+    position: relative;
+  }
+  .menu-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(10,79,122,0.12); }
+  .menu-card-img {
+    width: 100%; aspect-ratio: 4/3; overflow: hidden;
+    background: linear-gradient(135deg, var(--ocean-pale), var(--ocean-light));
+  }
+  .menu-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+  .menu-card:hover .menu-card-img img { transform: scale(1.06); }
+  .menu-card-body { padding: 1.1rem 1.2rem; }
+  .menu-card-body h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.3rem; }
+  .menu-card-body p { font-size: 0.8rem; color: var(--mist); font-weight: 300; }
+  .menu-price { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--ocean); font-size: 1rem; margin-top: 0.5rem; }
+
+  .menu-card .badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--ocean); color: var(--white);
+    font-size: 0.7rem; font-weight: 500;
+    padding: 0.25rem 0.7rem; border-radius: 50px;
+  }
+
+  /* ── GALLERY ── */
+  .gallery { background: var(--ocean-foam); overflow: hidden; }
+  .gallery-title-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem;
+  }
+  .g1 { grid-column: span 5; grid-row: span 2; aspect-ratio: unset; }
+  .g2 { grid-column: span 4; grid-row: span 1; }
+  .g3 { grid-column: span 3; grid-row: span 1; }
+  .g4 { grid-column: span 4; grid-row: span 1; }
+  .g5 { grid-column: span 3; grid-row: span 1; }
+
+  .gallery-item {
+    border-radius: 16px; overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, #c9e8f7, #5fb3e4);
+    min-height: 200px;
+  }
+  .g1 { min-height: 420px; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; display: block; }
+  .gallery-item:hover img { transform: scale(1.05); }
+  .gallery-item::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(10,79,122,0.3) 0%, transparent 50%);
+    opacity: 0; transition: opacity .3s;
+  }
+  .gallery-item:hover::after { opacity: 1; }
+
+  /* ── VIBE / TESTIMONIAL ── */
+  .vibe { background: var(--ocean); color: var(--white); padding: 5rem 5%; overflow: hidden; position: relative; }
+  .vibe::before {
+    content: '';
+    position: absolute; top: -40%; right: -10%;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: rgba(95,179,228,0.1);
+    pointer-events: none;
+  }
+
+  .vibe .section-label { color: rgba(255,255,255,0.5); }
+  .vibe .section-title { color: var(--white); }
+  .vibe .section-subtitle { color: rgba(255,255,255,0.65); }
+
+  .vibe-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .vibe-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px; padding: 2rem;
+    transition: background .25s;
+  }
+  .vibe-card:hover { background: rgba(255,255,255,0.12); }
+  .vibe-stars { color: #fbbf24; font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .vibe-text { font-size: 0.9rem; line-height: 1.7; color: rgba(255,255,255,0.8); font-weight: 300; margin-bottom: 1.2rem; font-style: italic; }
+  .vibe-author { display: flex; align-items: center; gap: 0.7rem; }
+  .vibe-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 500;
+  }
+  .vibe-name { font-size: 0.85rem; font-weight: 500; color: var(--white); }
+  .vibe-role { font-size: 0.75rem; color: rgba(255,255,255,0.45); }
+
+  /* ── FACILITIES ── */
+  .facilities { background: var(--white); }
+  .fac-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.2rem; margin-top: 3rem; }
+  .fac-item {
+    text-align: center; padding: 2rem 1.5rem;
+    background: var(--sand);
+    border-radius: 20px;
+    border: 1px solid rgba(10,79,122,0.06);
+    transition: all .25s;
+  }
+  .fac-item:hover { background: var(--ocean-pale); border-color: rgba(26,122,181,0.2); transform: translateY(-4px); }
+  .fac-emoji { font-size: 2rem; margin-bottom: 0.8rem; }
+  .fac-item h4 { font-size: 0.9rem; font-weight: 500; color: var(--ink); margin-bottom: 0.3rem; }
+  .fac-item p { font-size: 0.78rem; color: var(--mist); font-weight: 300; }
+
+  /* ── CTA / FIND US ── */
+  .findus { background: var(--sand); }
+  .findus-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .map-frame {
+    border-radius: 24px; overflow: hidden;
+    height: 380px;
+    background: var(--ocean-pale);
+    box-shadow: 0 8px 32px rgba(10,79,122,0.1);
+  }
+  .map-frame iframe { width: 100%; height: 100%; border: none; display: block; }
+
+  .info-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.2rem; }
+  .info-row { display: flex; align-items: flex-start; gap: 1rem; }
+  .info-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--ocean-pale); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+  }
+  .info-row h4 { font-size: 0.85rem; color: var(--mist); font-weight: 400; margin-bottom: 0.2rem; }
+  .info-row p { font-size: 0.95rem; color: var(--ink); font-weight: 500; }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+    color: var(--white); text-align: center; padding: 5rem 5%;
+  }
+  .cta-banner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; margin-bottom: 1rem;
+  }
+  .cta-banner p { color: rgba(255,255,255,0.75); font-size: 1rem; font-weight: 300; max-width: 440px; margin: 0 auto 2.5rem; }
+  .cta-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .btn-white {
+    background: var(--white); color: var(--ocean);
+    padding: 0.85rem 2rem; border-radius: 50px;
+    text-decoration: none; font-weight: 500; font-size: 0.95rem;
+    transition: all .2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.2); }
+  .btn-outline-white {
+    background: transparent; color: var(--white);
+    padding: 0.85rem 2rem; border-radius: 50px;
+    text-decoration: none; font-weight: 500; font-size: 0.95rem;
+    border: 2px solid rgba(255,255,255,0.4);
+    transition: all .2s;
+  }
+  .btn-outline-white:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.7); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.5);
+    padding: 3rem 5%;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700; color: var(--white);
+  }
+  .footer-logo span { color: var(--ocean-light); font-style: italic; }
+  footer p { font-size: 0.82rem; }
+  .footer-socials { display: flex; gap: 1rem; }
+  .footer-socials a {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.75rem;
+    transition: all .2s;
+  }
+  .footer-socials a:hover { background: var(--ocean); color: var(--white); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MOBILE NAV ── */
+  .mobile-menu {
+    display: none; flex-direction: column;
+    position: fixed; top: 70px; left: 0; right: 0;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    padding: 1.5rem 5%;
+    border-bottom: 1px solid rgba(10,79,122,0.08);
+    z-index: 99; gap: 1rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    text-decoration: none; color: var(--ink); font-size: 1rem; font-weight: 500;
+    padding: 0.5rem 0; border-bottom: 1px solid rgba(10,79,122,0.06);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+    .hero-visual { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-image-wrap { display: none; }
+    .vibe-grid { grid-template-columns: 1fr; }
+    .findus-inner { grid-template-columns: 1fr; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .g1, .g2, .g3, .g4, .g5 { grid-column: span 1; grid-row: span 1; min-height: 180px; }
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2.2rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .fac-grid { grid-template-columns: 1fr 1fr; }
+    .hero-stats { flex-wrap: wrap; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">MAHIS<span>Space</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">Tentang</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Galeri</a></li>
+    <li><a href="#fasilitas">Fasilitas</a></li>
+    <li><a href="#findus" class="nav-cta">Kunjungi Kami</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMenu()">Tentang</a>
+  <a href="#menu" onclick="toggleMenu()">Menu</a>
+  <a href="#gallery" onclick="toggleMenu()">Galeri</a>
+  <a href="#fasilitas" onclick="toggleMenu()">Fasilitas</a>
+  <a href="#findus" onclick="toggleMenu()">Kunjungi Kami</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="hero-badge">Buka Setiap Hari · 11.00 – 23.30 WIB</div>
+    <h1>
+      Titik Kumpul<br>
+      <em>Hidden Gem</em><br>
+      Kalijambe
+    </h1>
+    <p>Coffee shop aesthetic tersembunyi di Keden, Kalijambe, Sragen. Tempat sempurna buat ngopi, kerja, nugas, atau sekadar nongkrong santai bersama teman.</p>
+    <div class="hero-actions">
+      <a href="#menu" class="btn-primary">Lihat Menu ↓</a>
+      <a href="#findus" class="btn-ghost">📍 Temukan Kami</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="num">5K+</span>
+        <span class="label">Followers Instagram</span>
+      </div>
+      <div class="stat-item">
+        <span class="num">4.8★</span>
+        <span class="label">Rating Google</span>
+      </div>
+      <div class="stat-item">
+        <span class="num">100%</span>
+        <span class="label">Buka Tiap Hari</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="mosaic-main">
+      <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80" alt="Cafe interior cozy">
+    </div>
+    <div class="mosaic-sm2">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=80" alt="Coffee cup">
+    </div>
+    <div class="mosaic-sm1">
+      <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&q=80" alt="Coffee latte art">
+    </div>
+    <div class="float-card">
+      <div class="icon-wrap">☕</div>
+      <div class="fc-text">
+        <div class="fc-title">Live Music</div>
+        <div class="fc-sub">Rabu & Sabtu malam</div>
+      </div>
+    </div>
+  </div>
+
+  <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#f7f9fb"/>
+  </svg>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-image-wrap reveal">
+      <div class="about-img-main">
+        <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=700&q=80" alt="Cafe atmosphere">
+      </div>
+      <div class="about-tag">
+        <span class="tag-num">2024</span>
+        <span class="tag-text">Est. Kalijambe</span>
+      </div>
+      <div class="about-img-accent">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&q=80" alt="Coffee art">
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="section-label">Tentang Kami</div>
+      <h2 class="section-title">Lebih dari Sekadar<br>Tempat Ngopi</h2>
+      <p class="section-subtitle">MAHIS SPACE adalah hidden coffee shop di Keden, Kalijambe, Sragen — tempat yang hadir sebagai "titik kumpul" bagi siapa saja yang ingin menikmati kopi berkualitas sambil rileks atau berkreasi.</p>
+      <div class="about-features">
+        <div class="feat-item">
+          <div class="feat-icon">☕</div>
+          <div class="feat-content">
+            <h4>Kopi Spesial & Minuman Kekinian</h4>
+            <p>Dari kopi manual brew hingga minuman kekinian yang kamu suka.</p>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon">🎵</div>
+          <div class="feat-content">
+            <h4>Live Music Setiap Rabu & Sabtu</h4>
+            <p>Nikmati alunan musik live mulai pukul 19.00 – 22.00 WIB.</p>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon">💻</div>
+          <div class="feat-content">
+            <h4>Cocok untuk WFC & Nugas</h4>
+            <p>Wifi kencang, colokan tersedia, suasana tenang dan kondusif.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+  <div class="menu-header reveal">
+    <div>
+      <div class="section-label">Menu Pilihan</div>
+      <h2 class="section-title">Apa yang Ingin<br>Kamu Coba?</h2>
+    </div>
+    <div class="menu-tabs">
+      <button class="tab-btn active" onclick="filterMenu('all', this)">Semua</button>
+      <button class="tab-btn" onclick="filterMenu('kopi', this)">Kopi</button>
+      <button class="tab-btn" onclick="filterMenu('non', this)">Non-Kopi</button>
+      <button class="tab-btn" onclick="filterMenu('food', this)">Makanan</button>
+    </div>
+  </div>
+  <div class="menu-grid" id="menuGrid">
+    <div class="menu-card reveal" data-cat="kopi">
+      <span class="badge">Best Seller</span>
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80" alt="Butterscotch Latte">
+      </div>
+      <div class="menu-card-body">
+        <h3>Butterscotch Latte</h3>
+        <p>Espresso + susu segar + butterscotch syrup yang creamy</p>
+        <div class="menu-price">Rp 24.000</div>
+      </div>
+    </div>
+    <div class="menu-card reveal" data-cat="kopi">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=500&q=80" alt="V60">
+      </div>
+      <div class="menu-card-body">
+        <h3>V60 Pour Over</h3>
+        <p>Manual brew dengan biji kopi pilihan, clean & aromatic</p>
+        <div class="menu-price">Rp 23.000</div>
+      </div>
+    </div>
+    <div class="menu-card reveal" data-cat="non">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Matcha">
+      </div>
+      <div class="menu-card-body">
+        <h3>Matcha Presso</h3>
+        <p>Matcha premium blend dengan susu oat yang menyegarkan</p>
+        <div class="menu-price">Rp 28.000</div>
+      </div>
+    </div>
+    <div class="menu-card reveal" data-cat="non">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&q=80" alt="Magic Purple">
+      </div>
+      <div class="menu-card-body">
+        <h3>Magic Purple</h3>
+        <p>Minuman berwarna cantik, segar, dan instagramable</p>
+        <div class="menu-price">Rp 18.000</div>
+      </div>
+    </div>
+    <div class="menu-card reveal" data-cat="food">
+      <span class="badge">Favorit</span>
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80" alt="Nasi Goreng">
+      </div>
+      <div class="menu-card-body">
+        <h3>Nasi Goreng Rawon</h3>
+        <p>Nasi goreng with kuah rawon yang kaya rempah dan gurih</p>
+        <div class="menu-price">Rp 22.000</div>
+      </div>
+    </div>
+    <div class="menu-card reveal" data-cat="food">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1565299715199-866c917206bb?w=500&q=80" alt="Toast">
+      </div>
+      <div class="menu-card-body">
+        <h3>Toast Spesial</h3>
+        <p>Roti panggang dengan berbagai topping pilihan lezat</p>
+        <div class="menu-price">Rp 17.000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-title-row reveal">
+    <div>
+      <div class="section-label">Galeri</div>
+      <h2 class="section-title">Atmosfer yang<br>Bikin Betah</h2>
+    </div>
+    <a href="https://www.instagram.com/mahis_space/" target="_blank" class="btn-ghost">Lihat Instagram →</a>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item g1">
+      <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=800&q=80" alt="Cafe interior">
+    </div>
+    <div class="gallery-item g2">
+      <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" alt="Coffee moment">
+    </div>
+    <div class="gallery-item g3">
+      <img src="https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=400&q=80" alt="Coffee art">
+    </div>
+    <div class="gallery-item g4">
+      <img src="https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?w=600&q=80" alt="Cafe seating">
+    </div>
+    <div class="gallery-item g5">
+      <img src="https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?w=400&q=80" alt="Coffee beans">
+    </div>
+  </div>
+</section>
+
+<!-- VIBE / REVIEWS -->
+<section class="vibe">
+  <div style="text-align: center; margin-bottom: 1rem;">
+    <div class="section-label">Kata Mereka</div>
+    <h2 class="section-title">Pengalaman yang<br>Selalu Dikenang</h2>
+    <p class="section-subtitle" style="margin: 0 auto; text-align: center;">Ribuan pelanggan sudah membuktikan — MAHIS SPACE bukan sekadar cafe biasa.</p>
+  </div>
+  <div class="vibe-grid">
+    <div class="vibe-card reveal">
+      <div class="vibe-stars">★★★★★</div>
+      <p class="vibe-text">"Hidden gem banget! Tempatnya aesthetic, kopinya enak, dan suasananya bikin betah lama-lama. Wajib kunjungi kalau ke Kalijambe!"</p>
+      <div class="vibe-author">
+        <div class="vibe-avatar">AR</div>
+        <div>
+          <div class="vibe-name">Anindita R.</div>
+          <div class="vibe-role">Food Blogger · Sragen</div>
+        </div>
+      </div>
+    </div>
+    <div class="vibe-card reveal">
+      <div class="vibe-stars">★★★★★</div>
+      <p class="vibe-text">"Tempat WFC favorit ku! WiFi kenceng, colokan banyak, menu makanannya murah dan enak. Live music-nya tiap Rabu bikin makin seru."</p>
+      <div class="vibe-author">
+        <div class="vibe-avatar">BS</div>
+        <div>
+          <div class="vibe-name">Bagus S.</div>
+          <div class="vibe-role">Freelancer · Solo</div>
+        </div>
+      </div>
+    </div>
+    <div class="vibe-card reveal">
+      <div class="vibe-stars">★★★★★</div>
+      <p class="vibe-text">"Pertama kali ke sini langsung jatuh cinta sama vibenya. Butterscotch latte-nya juara! Harga terjangkau banget untuk kualitas kayak gini."</p>
+      <div class="vibe-author">
+        <div class="vibe-avatar">DF</div>
+        <div>
+          <div class="vibe-name">Dewi F.</div>
+          <div class="vibe-role">Mahasiswa · Sragen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FACILITIES -->
+<section class="facilities" id="fasilitas">
+  <div style="text-align: center;" class="reveal">
+    <div class="section-label">Fasilitas</div>
+    <h2 class="section-title">Segalanya Ada<br>untuk Kenyamananmu</h2>
+  </div>
+  <div class="fac-grid">
+    <div class="fac-item reveal">
+      <div class="fac-emoji">📶</div>
+      <h4>WiFi Cepat</h4>
+      <p>Koneksi stabil buat kerja & streaming</p>
+    </div>
+    <div class="fac-item reveal">
+      <div class="fac-emoji">🎵</div>
+      <h4>Live Music</h4>
+      <p>Rabu & Sabtu pukul 19.00–22.00</p>
+    </div>
+    <div class="fac-item reveal">
+      <div class="fac-emoji">🚗</div>
+      <h4>Parkir Luas</h4>
+      <p>Area parkir depan & belakang</p>
+    </div>
+    <div class="fac-item reveal">
+      <div class="fac-emoji">🕌</div>
+      <h4>Musala</h4>
+      <p>Fasilitas ibadah bersih tersedia</p>
+    </div>
+    <div class="fac-item reveal">
+      <div class="fac-emoji">🤝</div>
+      <h4>Ruang Meeting</h4>
+      <p>Ruang meeting lantai 2</p>
+    </div>
+    <div class="fac-item reveal">
+      <div class="fac-emoji">🚬</div>
+      <h4>Area Merokok</h4>
+      <p>Area khusus merokok di lantai 2</p>
+    </div>
+    <div class="fac-item reveal">
+      <div class="fac-emoji">💳</div>
+      <h4>Tunai & Non-Tunai</h4>
+      <p>Terima QRIS, transfer, cash</p>
+    </div>
+    <div class="fac-item reveal">
+      <div class="fac-emoji">🌿</div>
+      <h4>Spot Foto Aesthetic</h4>
+      <p>Dekorasi instagramable di setiap sudut</p>
+    </div>
+  </div>
+</section>
+
+<!-- FIND US -->
+<section class="findus" id="findus">
+  <div class="findus-inner">
+    <div class="reveal">
+      <div class="section-label">Lokasi</div>
+      <h2 class="section-title">Temukan Kami<br>di Kalijambe</h2>
+      <div class="info-list">
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div>
+            <h4>Alamat</h4>
+            <p>Keden, Kec. Kalijambe, Kab. Sragen, Jawa Tengah</p>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🕐</div>
+          <div>
+            <h4>Jam Buka</h4>
+            <p>Setiap Hari · 11.00 – 23.30 WIB</p>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📸</div>
+          <div>
+            <h4>Instagram</h4>
+            <p>@mahis_space</p>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="https://www.google.com/maps/place/MAHIS+SPACE/@-7.439246,110.7834751,17z" target="_blank" class="btn-primary">Buka di Google Maps →</a>
+        <a href="https://www.instagram.com/mahis_space/" target="_blank" class="btn-ghost">Follow Instagram</a>
+      </div>
+    </div>
+    <div class="map-frame reveal">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.48!2d110.7834751!3d-7.439246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a0d00041adec9%3A0xcac905bd44dd44f5!2sMAHIS%20SPACE!5e0!3m2!1sid!2sid!4v1234567890"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="MAHIS SPACE Location">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <h2>Siap Menjadi Bagian<br>dari MAHIS SPACE?</h2>
+  <p>Kunjungi kami, rasakan sendiri kopinya, dan jadikan MAHIS SPACE titik kumpulmu.</p>
+  <div class="cta-actions">
+    <a href="https://www.google.com/maps/place/MAHIS+SPACE/@-7.439246,110.7834751,17z" target="_blank" class="btn-white">📍 Cari Rute Kesana</a>
+    <a href="https://www.instagram.com/mahis_space/" target="_blank" class="btn-outline-white">📸 Follow @mahis_space</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MAHIS<span>Space</span></div>
+  <p>© 2025 MAHIS SPACE · Keden, Kalijambe, Sragen</p>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/mahis_space/" target="_blank" title="Instagram">IG</a>
+    <a href="https://www.tiktok.com/@mahis_space" target="_blank" title="TikTok">TT</a>
+    <a href="https://www.google.com/maps/place/MAHIS+SPACE/@-7.439246,110.7834751,17z" target="_blank" title="Google Maps">📍</a>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Hamburger toggle
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Menu filter
+  function filterMenu(cat, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.menu-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
